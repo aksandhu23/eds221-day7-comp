@@ -200,3 +200,74 @@ time_interval <- interval(day_1, day_2)
 
 time_length(time_interval, "year")
 ```
+
+```{r}
+my_string <- "Teddy loves eating salmon and socks."
+
+my_string|>
+  str_detect("love")
+
+my_string |> 
+  str_detect("pup")
+
+my_string2 <- c("burrito", "fish taco", "taco salad")
+
+my_string2 |>
+  str_detect("fish")
+```
+
+```{r}
+# looking at starwars. find rows where skywalker exists
+
+skywalkers <- starwars |>
+  filter(str_detect(name, pattern = "Skywalker"))
+
+mauls <- starwars |>
+  filter(str_detect(name, pattern = "Maul"))
+```
+
+## Create a subset that keeps rows where "blue" in the eye color
+
+```{r}
+blue_eyes <- starwars |>
+  filter(str_detect(eye_color, pattern = "blue"))
+```
+
+## str_replace to replace string patterns 
+
+```{r}
+firewalkers <- starwars |>
+  mutate(name_2 = str_replace(name, pattern = "Sky", replacement = "Fire"))
+```
+
+```{r}
+## Remove the white space in the string
+
+feedback <- c("  I ate  some   nachos", "Wednesday  morning ")
+
+str_trim(feedback)
+str_squish(feedback)
+
+# str_to* making things lower case, upper case, sentence case, etc
+
+str_to_lower(feedback)
+str_to_sentence(feedback)
+```
+
+```{r}
+# From star wars, create a new data frame starwars_lc that adds a new column called name_lower containing character names converted to all lowercase. 
+
+starwars_lc <- starwars |>
+  mutate(name_lower = str_to_lower(name))
+```
+
+### case_when()
+
+```{r}
+sw_robot <- starwars |>
+  mutate(robot_status = case_when(
+    species == "Droid" ~ "A ROBOT!!!",
+    species == "Human" ~ "It's a human!",
+    TRUE ~ "This is something else."
+  )) 
+```
