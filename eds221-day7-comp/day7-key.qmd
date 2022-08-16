@@ -1,0 +1,170 @@
+---
+title: "Joins and strings and dates"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+## Joins
+
+### Full Join
+
+### Left Join
+
+### Inner Join
+
+### Semi Join
+
+### Anti Join
+
+```{r}
+animals <-
+  tibble::tribble(
+    ~`location	species	maturity`,
+         "lagoon\tbobcat\tadult",
+       "bluff\tcoyote\tjuvenile",
+             "creek\tfox\tadult",
+      "oaks\tsquirrel\tjuvenile",
+          "bluff\tbobcat\tadult",
+                             "Ȁ"
+    )
+ sites <- tibble::tribble(
+            ~location,      ~full_site_name, ~jurisdiction,
+              "beach",       "Goleta Beach",     "SB City",
+             "lagoon",        "UCSB Lagoon",        "UCSB",
+              "bluff",       "Ellwood Mesa",     "SB City",
+               "oaks", "Fremont Campground",        "USFS"
+            )
+animals_2 <- tibble::tribble(
+               ~location,   ~species,  ~maturity,
+                "lagoon",   "bobcat",    "adult",
+                 "bluff",   "coyote", "juvenile",
+                 "creek",      "fox",    "adult",
+                  "oaks", "squirrel", "juvenile",
+                 "bluff",   "bobcat",    "adult"
+               )
+
+```
+
+Full Join
+
+```{r}
+
+# The by = tells the table what the matching key variable is 
+
+full_join_example <- full_join(animals_2, sites, by = "location")
+```
+
+Left Join
+
+```{r}
+left_join_example <- left_join(animals_2, sites, by = "location")
+```
+
+Inner Join
+
+```{r}
+inner_join_example <- inner_join(animals, sites, by = "location")
+```
+
+```{r}
+# replace locatation vaiable
+
+sites_2 <- sites|>
+  rename(loc = location)
+```
+
+```{r}
+nonmatching <- full_join(animals_2, sites_2, by = c("location" = "loc"))
+```
+
+Semi Join
+
+```{r}
+semi_join_example <- semi_join(animals_2, sites)
+```
+
+Anti Join
+
+```{r}
+anti_join_example <- anti_join(animals_2, sites)
+```
+
+## Date with lubridate
+
+```{r}
+my_date <- "03-15-1998"
+class(my_date)
+
+# mdy, ymd, dmy
+
+lubridate::mdy(my_date)
+
+
+my_date2 <- "11/7/2003"
+lubridate::dmy(my_date2)
+
+my_date3 <- "08-Jun-1974"
+lubridate::dmy(my_date3)
+
+my_date4 <- "19610518"
+lubridate::ymd(my_date4)
+my_real_date <- lubridate::ymd(my_date4)
+class(my_real_date)
+```
+
+Breaking the date
+
+```{r}
+# lubridate::mdy("1942-08-30") would break 
+lubridate::ymd("1942-08-30")
+
+# lubridate::dmy("09/22/84")
+lubridate::mdy("09/22/84")
+```
+
+```{r}
+time <- "2020-08-12 11:18"
+time <- lubridate::ymd_hm(time)
+
+class(time)
+```
+
+```{r}
+# Change time zone
+
+with_tz(time, "America/Los_Angeles")
+
+with_tz(time, "Europe/London")
+
+with_tz(time, "America/New_York")
+
+with_tz(time, "Asia/Jakarta")
+
+my_time <- lubridate::ymd_hms(time)
+
+year(my_time)
+
+day(my_time)
+
+hour(my_time)
+
+minute(my_time)
+
+second(my_time)
+```
+
+```{r}
+teddy_bday <- lubridate::ymd("20170615")
+
+# What is the day of the week
+wday(teddy_bday, label = TRUE)
+week(teddy_bday)
+
+my_bday <-lubridate::mdy(04231994)
+wday(my_bday, label = TRUE)
+```
