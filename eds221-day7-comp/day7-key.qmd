@@ -68,7 +68,7 @@ left_join_example <- left_join(animals_2, sites, by = "location")
 Inner Join
 
 ```{r}
-inner_join_example <- inner_join(animals, sites, by = "location")
+inner_join_example <- inner_join(animals_2, sites, by = "location")
 ```
 
 ```{r}
